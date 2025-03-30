@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Invoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background-color: #cccccc; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/customer-dashboard">Dashboard</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Create Invoice</h2>
+        <form id="invoiceForm" action="/create-invoice" method="post">
+            <div class="mb-3">
+                <label for="client_name" class="form-label">Client Name</label>
+                <input type="text" class="form-control" id="client_name" name="client_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="client_phone" class="form-label">Client Phone</label>
+                <input type="tel" class="form-control" id="client_phone" name="client_phone">
+            </div>
+            <div class="mb-3">
+                <label for="client_tax_number" class="form-label">Tax Number</label>
+                <input type="text" class="form-control" id="client_tax_number" name="client_tax_number">
+            </div>
+            <div class="mb-3">
+                <label for="client_address" class="form-label">Address</label>
+                <textarea class="form-control" id="client_address" name="client_address"></textarea>
+            </div>
+
+            <h4>Add Items</h4>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="search" placeholder="Search by name or barcode">
+                <button class="btn btn-outline-success" type="button" onclick="searchProduct()">Search</button>
+            </div>
+
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Barcode</th>
+                        <th>Sell Price</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsBody"></tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary mt-3">Save Invoice</button>
+        </form>
+    </div>
+
+    <script>
+        let items = [];
+
+        async function searchProduct() {
+            const search = document.getElementById('search').value;
+            const response = await fetch(`/search-product?search=${search}`);
+            const products = await response.json();
+
+            const tbody = document.getElementById('itemsBody');
+            tbody.innerHTML = '';
+            products.forEach(product => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.barcode || 'N/A'}</td>
+                    <td>${product.sell_price}</td>
+                    <td><input type="number" min="1" max="${product.quantity}" onchange="updateItem(${product.id}, this.value)"></td>
+                    <td>
+                        <select onchange="updateUnit(${product.id}, this.value)">
+                            <option value="piece">Piece</option>
+                            <option value="carton">Carton</option>
+                            <option value="dozen">Dozen</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeItem(${product.id})">Remove</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateItem(productId, quantity) {
+            const existing = items.find(item => item.product_id === productId);
+            if (existing) {
+                existing.quantity = quantity;
+            } else {
+                items.push({ product_id: productId, quantity: quantity, unit: 'piece' });
+            }
+            updateHiddenInputs();
+        }
+
+        function updateUnit(productId, unit) {
+            const item = items.find(item => item.product_id === productId);
+            if (item) item.unit = unit;
+            updateHiddenInputs();
+        }
+
+        function removeItem(productId) {
+            items = items.filter(item => item.product_id !== productId);
+            searchProduct(); // Refresh table
+        }
+
+        function updateHiddenInputs() {
+            const form = document.getElementById('invoiceForm');
+            const existingInputs = form.querySelectorAll('input[name^="items"]');
+            existingInputs.forEach(input => input.remove());
+
+            items.forEach((item, index) => {
+                form.insertAdjacentHTML('beforeend', `
+                    <input type="hidden" name="items[${index}][product_id]" value="${item.product_id}">
+                    <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
+                    <input type="hidden" name="items[${index}][unit]" value="${item.unit}">
+                `);
+            });
+        }
+    </script>
+</body>
+</html>

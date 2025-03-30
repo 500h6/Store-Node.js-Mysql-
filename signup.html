@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Create New Account</h2>
+    <div class="modal" style="display: block;">
+        <form class="modal-content animate" action="/signup" method="post">
+            <div class="container">
+                <label for="username"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required>
+
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required>
+
+                <label for="email"><b>Email</b></label>
+                <input type="email" placeholder="Your@email.com" name="email">
+
+                <label for="phone"><b>Phone</b></label>
+                <input type="tel" placeholder="Your Phone Number" name="phone">
+
+                <button type="submit">Sign Up</button>
+            </div>
+            <div class="container" style="background-color:#f1f1f1">
+                <a href="/login">Already have an account? Log in</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

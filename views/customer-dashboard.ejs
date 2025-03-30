@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #343a40;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #a5d8ff !important;
+        }
+        .dashboard-container {
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+        .welcome-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .welcome-card h1 {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .welcome-card p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        .action-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        .action-card i {
+            font-size: 2rem;
+            color: #4dabf7;
+            margin-bottom: 1rem;
+        }
+        .action-card a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .action-card a:hover {
+            color: #4dabf7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/customer-dashboard">Customer Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container dashboard-container">
+        <div class="welcome-card">
+            <h1>Welcome, <%= username %>!</h1>
+            <p>Explore your options and manage your shopping experience.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="action-card">
+                    <i class="fas fa-shopping-bag"></i>
+                    <a href="/products">View Products</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="action-card">
+                    <i class="fas fa-cart-arrow-down"></i>
+                    <a href="/cart">View Cart</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="action-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <a href="/create-invoice">Create Invoice</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="action-card">
+                    <i class="fas fa-box-open"></i>
+                    <a href="/request-product">Request Product</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #343a40;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            color: #a5d8ff !important;
+        }
+        .cart-container {
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+        .cart-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .cart-card h1 {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+        .table {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead {
+            background-color: #4dabf7;
+            color: #ffffff;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+        .total-section {
+            text-align: right;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+        .total-section strong {
+            color: #4dabf7;
+        }
+        .btn-checkout {
+            background-color: #4dabf7;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: bold;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-checkout:hover {
+            background-color: #339af0;
+        }
+        .btn-back {
+            background-color: #6b7280;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: bold;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/customer-dashboard">Customer Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Content -->
+    <div class="container cart-container">
+        <div class="cart-card">
+            <h1>Your Cart</h1>
+            <% if (items.length > 0) { %>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% items.forEach(function(item) { %>
+                            <tr>
+                                <td><%= item.name %></td>
+                                <td><%= item.quantity %></td>
+                                <td><%= item.unit %></td>
+                                <td><%= (parseFloat(item.sell_price) || 0).toFixed(2) %> SAR</td>
+                                <td><%= (item.quantity * (parseFloat(item.sell_price) || 0)).toFixed(2) %> SAR</td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                <div class="total-section">
+                    <strong>Total: <%= total.toFixed(2) %> SAR</strong>
+                </div>
+                <div class="text-end mt-3">
+                    <a href="/products" class="btn btn-back me-2">Back to Products</a>
+                    <a href="/create-invoice" class="btn btn-checkout">Proceed to Checkout</a>
+                </div>
+            <% } else { %>
+                <p class="text-center text-muted">Your cart is empty.</p>
+                <div class="text-center mt-3">
+                    <a href="/products" class="btn btn-back">Back to Products</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
